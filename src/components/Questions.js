@@ -8,14 +8,24 @@ export default function Questions(){
       .then(res => res.json())
       .then(data => setQuizQuestions(data.results))
       }, [])
-  
+  console.log(quizQuestions)
    const questions = quizQuestions.map(e => {
-    console.log(e)
-    return( 
-        <>
+    const answers = e.incorrect_answers
+    if(answers.length < 4){
+        answers.push(e.correct_answer)
+    }
+    
+    const answerElements = answers.map(answer => {
+        return(
+            <span dangerouslySetInnerHTML={{__html: answer}} id="answers"></span>
+        )
+    })
+    console.log(answerElements)
+      return( 
+        <div>
         <h2 dangerouslySetInnerHTML={{__html: e.question}} />
-
-        </>
+        {answerElements}
+        </div>
         
 
     )
