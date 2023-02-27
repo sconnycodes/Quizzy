@@ -1,15 +1,22 @@
 #mainContent {
-    margin: auto 10% ;
+    margin: 10% 10%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding-top: 30%;
+    
 }
 
-#answers {
+.answers {
+    display: inline-block;
     margin: 2px;
     padding: 10px 20px;
     border: 2px solid black;
     border-radius: 10px;
+   
+
+}
+
+.answers:hover{
+    cursor: pointer;
 }
