@@ -37,7 +37,7 @@ export default function Questions(){
   return (
     <div>
         {questions}
-        <button onClick={checkAnswers}>Check answers</button>
+        <button onClick={checkAnswers} id="checkAnswerBtn">Check answers</button>
     </div>
         
     )

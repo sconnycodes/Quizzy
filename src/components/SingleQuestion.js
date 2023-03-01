@@ -53,7 +53,7 @@ export default function SingleQuestion(props){
         return(
             <span 
             dangerouslySetInnerHTML={{__html: answer.answer}}
-            className="answers"
+            className={`answers ${answer.isSelected && "isSelected"}`}
             key={nanoid()}
             onClick={(event) => selected(event)}
             id={answer.answer}>
