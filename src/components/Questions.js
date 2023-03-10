@@ -4,19 +4,24 @@ import SingleQuestion from "./SingleQuestion"
 
 export default function Questions(){
     const [quizQuestions, setQuizQuestions] = useState([])
+    const [answers, setAnswers] = useState([])
     //fetch quiz questions
     useEffect(() => {
         fetch("https://opentdb.com/api.php?amount=5&category=9&type=multiple")
             .then(res => res.json())
             .then(data => {
             //sets quizQuestions to an array of objects
-                setQuizQuestions(data.results)  
+                setQuizQuestions(data.results)
+                setAnswers(data.results.map(question => {
+                    return question.correct_answer
+                }))  
             })
             .catch(console.error)
     }, [])
     
     function answerSelected(event){
         console.log(quizQuestions)
+        console.log(answers)
     }
     
     function checkAnswers(){

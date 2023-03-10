@@ -9,7 +9,7 @@ export default function SingleQuestion(props){
         setRenderAnswers(prevState => [...prevState, props.questions.correct_answer])  
         
     }
-    console.log(renderAnswers)
+   
     // next need to randomise the renderAnswers array 
     React.useEffect(() => {
         setRenderAnswers(prevState => {
@@ -17,11 +17,10 @@ export default function SingleQuestion(props){
             return({
                 answer: answer,
                 isSelected: false,
-                isCorrect: (answer == props.questions.correct_answer) 
-            })
-               
+                isCorrect: (answer === props.questions.correct_answer) 
+            })             
         })
-        console.log(randomisedArray)
+        
         for(let i = randomisedArray.length - 1; i > 0; i--){
             let j = Math.floor(Math.random() * i)
             let k = randomisedArray[i]
@@ -37,14 +36,13 @@ export default function SingleQuestion(props){
         setRenderAnswers(prevState => {
             
             return prevState.map(answer => {
-                if(answer.answer == event.target.id){
+                if(answer.answer === event.target.id){
                     return {...answer, isSelected: !answer.isSelected}
                 } else {
-                    return answer
+                    return {...answer, isSelected: false}
                 }
             })
         })
-        console.log(renderAnswers)
         props.answerSelected(event.target.id)
     }
 
