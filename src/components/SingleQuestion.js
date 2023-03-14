@@ -2,59 +2,27 @@ import React from "react"
 import {nanoid} from "nanoid"
 
 export default function SingleQuestion(props){
-    const [renderAnswers, setRenderAnswers] = React.useState(props.questions.incorrect_answers)
-    
+    const answers = props.questions.incorrect_answers
     //some incorrect answer arrays returned from the API only contain incorrect answers whereas some include the correct answer, if the length is less than 4 then the below adds the correct answer to the array
-    if(renderAnswers.length < 4){
-        setRenderAnswers(prevState => [...prevState, props.questions.correct_answer])  
-        
+    if(answers.length < 4){
+        answers.push(props.questions.correct_answer)
     }
    
-    // next need to randomise the renderAnswers array 
-    React.useEffect(() => {
-        setRenderAnswers(prevState => {
-        const randomisedArray = prevState.map(answer => {
-            return({
-                answer: answer,
-                isSelected: false,
-                isCorrect: (answer === props.questions.correct_answer) 
-            })             
-        })
-        
-        for(let i = randomisedArray.length - 1; i > 0; i--){
-            let j = Math.floor(Math.random() * i)
-            let k = randomisedArray[i]
-            randomisedArray[i] = randomisedArray[j]
-            randomisedArray[j] = k
-        }
-        return randomisedArray
-        })
-    }, [])
+    
 
-
-    function selected(event){
-        setRenderAnswers(prevState => {
-            
-            return prevState.map(answer => {
-                if(answer.answer === event.target.id){
-                    return {...answer, isSelected: !answer.isSelected}
-                } else {
-                    return {...answer, isSelected: false}
-                }
-            })
-        })
-        props.answerSelected(event.target.id)
+    function selected(event, questionNum){
+        props.answerSelected(event, questionNum)
     }
 
     // build the answer components
-    const answerElements = renderAnswers.map(answer => {       
+    const answerElements = answers.map(answer => {       
         return(
             <span 
-            dangerouslySetInnerHTML={{__html: answer.answer}}
-            className={`answers ${answer.isSelected && "isSelected"}`}
+            dangerouslySetInnerHTML={{__html: answer}}
+            className={`answers ${props.questions.isSelected && "isSelected"}`}
             key={nanoid()}
-            onClick={(event) => selected(event)}
-            id={answer.answer}>
+            onClick={(event) => selected(event, props.questions.questionNum)}
+            id={answer}>
 
             </span>
         )
