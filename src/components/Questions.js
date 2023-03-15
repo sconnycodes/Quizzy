@@ -11,14 +11,14 @@ export default function Questions(){
             .then(res => res.json())
             .then(data => {
             //sets quizQuestions to an array of objects
-                setQuizQuestions(data.results.map((question, index) => {
-                    const answerArray = (question) => {
+                setQuizQuestions(() => {
+                    const newState = data.results.map((question, index) => {
                         const answers = question.incorrect_answers.map(q => {
-                            return {q, isSelected: false;}
-                            
+                            return {answer: q, isSelected: false}
                         })
+                        //some incorrect answer arrays returned from the API only contain incorrect answers whereas some include the correct answer, if the length is less than 4 then the below adds the correct answer to the array
                         if(answers.length < 4){
-                            answers.push(question.correct_answer)
+                            answers.push({answer: question.correct_answer, isSelected: false})
                         }
                         // next need to randomise the answers array 
                         for(let i = 3; i > 0; i--){
@@ -27,35 +27,42 @@ export default function Questions(){
                             answers[i] = answers[j]
                             answers[j] = k
                         }
-                        return answers
-                    }
-
-                    
-
-                    return {
-                        ...question,
-                        possibleAnswers: answerArray,
-                        questionNum: (index + 1)
-                    }
-                }))
-                 
+                        
+                        return {
+                            ...question,
+                            possibleAnswers: answers,
+                            questionNum: (index + 1)
+                        } 
+                        })
+                        
+                        return newState                     
+                })  
             })
             .catch(console.error)
     }, [])
     
-    function answerSelected(event, questionNum){
-        console.log(event)
+    function answerSelected(answer, questionNum){
+        console.log(answer, questionNum)
         setQuizQuestions(prevState => {
             const newState = prevState.map(question => {
+                console.log(question)
                 if(questionNum == question.questionNum){
+                    const newPossAnswers = question.possibleAnswers.map(a => {
+                        if(answer === a.answer){
+                            return {...a, isSelected: !a.isSelected}
+                        } else {
+                            return {...a, isSelected: false}
+                        }
+                    })
                     return {
                         ...question,
-                        isSelected: !question.isSelected
+                        possibleAnswers: newPossAnswers
                     }
                 } else {
                     return question
                 }
             })
+            console.log(newState)
             return newState
         })
         
