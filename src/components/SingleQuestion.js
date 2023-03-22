@@ -8,11 +8,13 @@ export default function SingleQuestion(props){
     }
 
     // build the answer components
-    const answerElements = props.questions.possibleAnswers.map(answer => {       
+    const answerElements = props.questions.possibleAnswers.map(answer => {   
+        let isSelected = answer.isSelected 
+        
         return(
             <span 
             dangerouslySetInnerHTML={{__html: answer.answer}}
-            className={`answers ${answer.isSelected && "isSelected"}`}
+            className={`answers ${isSelected && "isSelected"} `}
             key={nanoid()}
             onClick={(event) => selected(event, props.questions.questionNum)}
             id={answer.answer}>

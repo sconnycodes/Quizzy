@@ -14,14 +14,15 @@ export default function Questions(){
                 setQuizQuestions(() => {
                     const newState = data.results.map((question, index) => {
                         const answers = question.incorrect_answers.map(q => {
-                            return {answer: q, isSelected: false}
+                            return {answer: q, isSelected: false, isCorrect: false, isMarked: false, }
                         })
-                        //some incorrect answer arrays returned from the API only contain incorrect answers whereas some include the correct answer, if the length is less than 4 then the below adds the correct answer to the array
+                        // add correct answer to answers array
                         if(answers.length < 4){
-                            answers.push({answer: question.correct_answer, isSelected: false})
+                            answers.push({answer: question.correct_answer, isSelected: false, isCorrect: true, isMarked: false,})
                         }
-                        // next need to randomise the answers array 
-                        for(let i = 3; i > 0; i--){
+                        // next need to randomise the answers array
+                        // ***This needs reviewed as correct answer never seems to end up as the fourth option post shuffle*** 
+                        for(let i = answers.length - 1; i > 0; i--){
                             let j = Math.floor(Math.random() * i)
                             let k = answers[i]
                             answers[i] = answers[j]
@@ -41,12 +42,13 @@ export default function Questions(){
             .catch(console.error)
     }, [])
     
+    // handle if answer is selected and highlight
+    // if another answer is already selected for question then toggle isSelected to false, otherwise toggle to the opposite of the existing state
     function answerSelected(answer, questionNum){
         console.log(answer, questionNum)
         setQuizQuestions(prevState => {
             const newState = prevState.map(question => {
-                console.log(question)
-                if(questionNum == question.questionNum){
+                if(questionNum === question.questionNum){
                     const newPossAnswers = question.possibleAnswers.map(a => {
                         if(answer === a.answer){
                             return {...a, isSelected: !a.isSelected}
@@ -69,7 +71,25 @@ export default function Questions(){
     }
     
     function checkAnswers(){
-
+        console.log("Hello")
+        //first check all questions have been answered
+        let numOfQuestionsAnswered = 0
+        quizQuestions.forEach(question => {
+            let isAnswered = false
+            question.possibleAnswers.forEach(answer => {
+                if(answer.isSelected === true){
+                    isAnswered = true
+                }
+            })
+            if(isAnswered){
+                numOfQuestionsAnswered++
+            }
+        })
+        if(numOfQuestionsAnswered < 5){
+            console.log("Please select an answer for each question")
+        } else {
+            console.log("All 5 selected")
+        }
     }
 
     // generate question elements  
