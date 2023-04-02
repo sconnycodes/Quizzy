@@ -116,7 +116,7 @@ export default function Questions(){
     const endQuizScore = <h3 id="scoreDisplay">You have {numOfCorrect}/5 answers correct.</h3>
   
   return (
-    <div id="questionContainer">
+    <div>
         {questions}
         {endQuiz && endQuizScore}
         <button onClick={checkAnswers} id="checkAnswerBtn">Check answers</button>
