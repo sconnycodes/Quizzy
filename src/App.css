@@ -16,10 +16,9 @@ body {
     display: inline-block;
     margin: 2px;
     padding: 10px 20px;
-    border: 2px solid black;
     border-radius: 10px;
     background-color: rgb(255, 247, 236);
-
+    border: 2px solid transparent;
 }
 
 .answers:hover{
@@ -28,6 +27,8 @@ body {
 
 .isSelected {
     background-color: rgb(236, 236, 155);
+    border-color: rgb(0, 0, 0);
+    border: 2px solid black;
 }
 
 #checkAnswerBtn {
@@ -39,4 +40,23 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+}
+
+.correct {
+    background-color: rgb(133, 192, 133);
+}
+
+.incorrect {
+    background-color: rgb(216, 112, 129);
+}
+
+.isSelected.correct {
+    background-color: rgb(50, 153, 50);
+    color: white;
+}
+
+
+#scoreDisplay {
+    margin-top: 10px;
+    text-align: center;
 }
