@@ -9,10 +9,6 @@ export default function App() {
     setQuizStarted(status => !status)
   }
 
-  
-
- 
- 
   return (
     <div id="mainContent">
       {!quizStarted && <Start startQuiz={startQuiz}/>}
